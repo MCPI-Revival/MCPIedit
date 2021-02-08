@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+cd "$(dirname "$0")"
+
+if [ ! -f ./pi-nbt ]; then
+    cc -O3 -o pi-nbt pi-nbt.c
+fi
+
+python3 ./main.py
