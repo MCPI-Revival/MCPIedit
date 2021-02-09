@@ -60,7 +60,7 @@ class WorldTab(Tab):
         context.nbt_file['LevelName'] = TAG_String(self.world_name.get('1.0', 'end'))
         context.nbt_file['RandomSeed'] = TAG_Long(int(self.seed.get('1.0', 'end')))
         context.nbt_file['Time'] = TAG_Long(int(self.time.get('1.0', 'end')))
-        context.nbt_file['Time'] = TAG_Int(GAME_MODE.index(self.game_mode.get()))
+        context.nbt_file['GameType'] = TAG_Int(GAME_MODE.index(self.game_mode.get()))
     def reload_nbt(self):
         self.world_name.delete('1.0', 'end')
         self.world_name.insert('1.0', context.nbt_file['LevelName'].value)
@@ -89,9 +89,10 @@ class WorldTab(Tab):
         
         self.game_mode = tk.StringVar(self)
         game_mode_label = tk.Label(self, text='Game Mode:')
-        game_mode_label.grid(row=2, column=0, padx=6, pady=6, sticky='W')
-        game_mode_widget = tk.OptionMenu(self, self.game_mode, *GAME_MODE)
-        game_mode_widget.grid(row=2, column=1, padx=5, pady=5, sticky='EW')
+        game_mode_label.grid(row=3, column=0, padx=6, pady=6, sticky='W')
+        game_mode_widget = ttk.Combobox(self, textvariable=self.game_mode, values=GAME_MODE)
+        game_mode_widget.state(['readonly'])
+        game_mode_widget.grid(row=3, column=1, padx=5, pady=5, sticky='EW')
 
 class PlayerTab(Tab):
     def save_nbt(self):
