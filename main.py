@@ -43,6 +43,35 @@ class Tab(ttk.Frame):
         self.create_widgets()
         tabs.append(self)
 
+class ToolTip(object):
+    def __init__(self, widget, text=None):
+        self.widget = widget
+        self.text = text
+        widget.bind("<Enter>", self.mouse_enter)
+        widget.bind("<Leave>", self.mouse_leave)
+
+
+    def mouse_enter(self, _event):
+        self.show_tooltip()
+
+    def mouse_leave(self, _event_):
+        self.hide_tooltip()
+
+    def show_tooltip(self):
+        x_left = self.widget.winfo_rooty()
+        y_top = self.widget.winfo_rootx() - 18
+        self.tip_window = tk.Toplevel(self.widget)
+        self.tip_window.overrideredirect(True)
+        self.tip_window.geometry("+%d+%d" % (x_left, y_top))
+        label = tk.Label(self.tip_window, text=self.text, justify=tk.LEFT, background="#ffffe0", relief=tk.SOLID, borderwidth=1, font=("tahoma", 8, "normal"))
+        label.pack(ipadx=1)
+
+    def hide_tooltip(self):
+        if self.tip_window:
+            self.tip_window.destroy()
+
+            
+
 def save_nbt():
     for tab in tabs:
         tab.save_nbt()
@@ -75,22 +104,26 @@ class WorldTab(Tab):
         world_name_label = tk.Label(self, text='World Name:')
         world_name_label.grid(row=0, column=0, padx=6, pady=6, sticky='W')
         self.world_name = tk.Text(self, height=1, width=24, padx=5, pady=5)
+        self.world_name.tooltip = ToolTip(self.world_name, "TThis is the name of your Minecraft World")
         self.world_name.grid(row=0, column=1, padx=5, pady=5, sticky='EW')
 
         seed_label = tk.Label(self, text='Seed:')
         seed_label.grid(row=1, column=0, padx=6, pady=6, sticky='W')
         self.seed = tk.Text(self, height=1, width=24, padx=5, pady=5)
+        self.seed.tooltip = ToolTip(self.seed, "This is the minecraft world's seed")
         self.seed.grid(row=1, column=1, padx=5, pady=5, sticky='EW')
 
         time_label = tk.Label(self, text='Time:')
         time_label.grid(row=2, column=0, padx=6, pady=6, sticky='W')
         self.time = tk.Text(self, height=1, width=24, padx=5, pady=5)
+        self.time.tooltip = ToolTip(self.time, "This is the time (in ticks) in your world.")
         self.time.grid(row=2, column=1, padx=5, pady=5, sticky='EW')
         
         self.game_mode = tk.StringVar(self)
         game_mode_label = tk.Label(self, text='Game Mode:')
         game_mode_label.grid(row=3, column=0, padx=6, pady=6, sticky='W')
         game_mode_widget = ttk.Combobox(self, textvariable=self.game_mode, values=GAME_MODE)
+        game_mode_widget.tooltip = ToolTip(game_mode_widget, "This is your gamemode. Creative/Survival. This actually DOES change the gamemode.")
         game_mode_widget.state(['readonly'])
         game_mode_widget.grid(row=3, column=1, padx=5, pady=5, sticky='EW')
 
@@ -106,6 +139,7 @@ class PlayerTab(Tab):
         health_label = tk.Label(self, text='Health:')
         health_label.grid(row=0, column=0, padx=6, pady=6, sticky='W')
         self.health = tk.Text(self, height=1, width=24, padx=5, pady=5)
+        self.health.tooltip = ToolTip(self.health, "This is the health you have in your minecraft world")
         self.health.grid(row=0, column=1, padx=5, pady=5, sticky='EW')
 
 class ScrollableTab(Tab):
