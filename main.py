@@ -63,7 +63,7 @@ class WorldTab(Tab):
         context.nbt_file['GameType'] = TAG_Int(GAME_MODE.index(self.game_mode.get()))
     def reload_nbt(self):
         self.world_name.delete('1.0', 'end')
-        self.world_name.insert('1.0', context.nbt_file['LevelName'].value)
+        self.world_name.insert('1.0', context.nbt_file['LevelName'].value[:-1])
         self.seed.delete('1.0', 'end')
         self.seed.insert('1.0', str(context.nbt_file['RandomSeed'].value))
         self.time.delete('1.0', 'end')
