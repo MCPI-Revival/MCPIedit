@@ -57,7 +57,7 @@ GAME_MODE = [
 
 class WorldTab(Tab):
     def save_nbt(self):
-        context.nbt_file['LevelName'] = TAG_String(self.world_name.get('1.0', 'end'))
+        context.nbt_file['LevelName'] = TAG_String(self.world_name.get('1.0', 'end')[:-1])
         context.nbt_file['RandomSeed'] = TAG_Long(int(self.seed.get('1.0', 'end')))
         context.nbt_file['Time'] = TAG_Long(int(self.time.get('1.0', 'end')))
         context.nbt_file['GameType'] = TAG_Int(GAME_MODE.index(self.game_mode.get()))
