@@ -172,9 +172,7 @@ class InventoryTab(ScrollableTab):
         self.slots = []
         for child in self.scrollable_frame.winfo_children():
             child.destroy()
-        i = 0
-        for slot in context.nbt_file['Player'].value[self.name].value:
-            i = i + 1
+        for i, slot in enumerate(context.nbt_file['Player'].value[self.name].value):
             if i > self.total_slots:
                 break
             self.slots.append(create_slot(self.scrollable_frame, slot['id'].value, slot['Count'].value, slot['Damage'].value, i))
